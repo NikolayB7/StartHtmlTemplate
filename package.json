@@ -28,6 +28,7 @@
 	"dependencies": {
 		"inputmask": "^5.0.5",
 		"jquery-validation": "^1.19.2",
-		"micromodal": "^0.4.6"
+		"micromodal": "^0.4.6",
+		"normalize.css": "^8.0.1"
 	}
 }

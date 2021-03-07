@@ -78,6 +78,11 @@ strong {
   font-weight: bold;
 }
 
+ul,ol{
+  //padding-left: 0;
+  margin: 0;
+}
+
 
 body {
   font-family: $font;
@@ -92,7 +97,13 @@ body {
 .container {
   @include container;
 }
-
+.container-fluid{
+  display: block;
+  margin: 0 auto;
+  padding: 0 15px;
+  max-width: 1530px;
+  min-width: 320px;
+}
 
 
 
