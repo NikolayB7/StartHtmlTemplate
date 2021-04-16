@@ -26,6 +26,7 @@
 		"jquery": "^3.5.1"
 	},
 	"dependencies": {
+		"gulp-file-include": "^2.3.0",
 		"inputmask": "^5.0.5",
 		"jquery-validation": "^1.19.2",
 		"micromodal": "^0.4.6",

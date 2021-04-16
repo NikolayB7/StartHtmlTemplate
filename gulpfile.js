@@ -4,8 +4,9 @@ let preprocessor = 'scss', // Preprocessor (sass, scss, less, styl)
 	fileswatch = 'html,htm,txt,json,md,woff2', // List of files extensions for watching & hard reload (comma separated)
 	imageswatch = 'jpg,jpeg,png,webp,svg', // List of images extensions for watching & compression (comma separated)
 	baseDir = 'app', // Base directory path without «/» at the end
+	
 	online = true; // If «false» - Browsersync will work offline without internet connection
-
+	
 let paths = {
 
 	scripts: {
@@ -17,7 +18,10 @@ let paths = {
 		],
 		dest: baseDir + '/js',
 	},
-
+	html:{
+		src: baseDir +	'/html/*.html',
+		dest: baseDir 
+	},
 	styles: {
 		src: baseDir + '/' + preprocessor + '/main.*',
 		dest: baseDir + '/css',
@@ -56,6 +60,7 @@ const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const rsync = require('gulp-rsync');
 const del = require('del');
+const fileinclude = require('gulp-file-include');
 
 function browsersync() {
 	browserSync.init({
@@ -63,6 +68,15 @@ function browsersync() {
 		notify: false,
 		online: online
 	})
+}
+function filehtml(){
+	return src(paths.html.src)
+	  .pipe(fileinclude({
+		prefix: '@@',
+		basepath: '@file'
+	  }))
+	  .pipe(dest(paths.html.dest))
+	  .pipe(browserSync.stream())
 }
 
 function scripts() {
@@ -95,6 +109,20 @@ function cleanimg() {
 	return del('' + paths.images.dest + '/**/*', { force: true })
 }
 
+function buildcopy() {
+    return src([
+            'app/css/**/*.min.css',
+            'app/fonts/**/*',
+            'app/libs/**/*',
+            'app/js/**/*.min.js',
+            'app/images/dest/**/*',
+            'app/*.html',
+        ], {
+            base: 'app'
+        })
+        .pipe(dest('build'))
+}
+
 function deploy() {
 	return src(baseDir + '/')
 		.pipe(rsync({
@@ -112,6 +140,7 @@ function deploy() {
 
 function startwatch() {
 	watch(baseDir + '/' + preprocessor + '/**/*', { usePolling: true }, styles);
+	watch(baseDir + '/html/**/*', { usePolling: true }, filehtml);
 	watch(baseDir + '/images/src/**/*.{' + imageswatch + '}', { usePolling: true }, images);
 	watch(baseDir + '/**/*.{' + fileswatch + '}', { usePolling: true }).on('change', browserSync.reload);
 	watch([baseDir + '/js/**/*.js', '!' + paths.scripts.dest + '/*.min.js'], { usePolling: true }, scripts);
@@ -124,4 +153,7 @@ exports.scripts = scripts;
 exports.images = images;
 exports.cleanimg = cleanimg;
 exports.deploy = deploy;
-exports.default = parallel(images, styles, scripts, browsersync, startwatch);
+exports.filehtml = filehtml;
+exports.buildcopy = buildcopy;
+exports.build = series(buildcopy);
+exports.default = parallel(filehtml,images, styles, scripts, browsersync, startwatch);
