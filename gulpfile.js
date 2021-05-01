@@ -108,6 +108,9 @@ function images() {
 function cleanimg() {
 	return del('' + paths.images.dest + '/**/*', { force: true })
 }
+function buildclean() {
+	return del( 'build/**/*', { force: true })
+}
 
 function buildcopy() {
     return src([
@@ -154,6 +157,7 @@ exports.images = images;
 exports.cleanimg = cleanimg;
 exports.deploy = deploy;
 exports.filehtml = filehtml;
+exports.buildclean = buildclean;
 exports.buildcopy = buildcopy;
 exports.build = series(buildcopy);
 exports.default = parallel(filehtml,images, styles, scripts, browsersync, startwatch);
