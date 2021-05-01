@@ -69,8 +69,8 @@ $(function () {
         //Высота шапкис учетом отступов если она фиксированая (если нет убрать переменную heightHeader с top )
         var heightHeader = $('.header').outerHeight(true);
         //узнаем высоту от начала страницы до блока на который ссылается якорь
-       // var  top = $(id).offset().top - heightHeader; //Если header fixed
-        var top = $('#' + id).offset().top;
+       var  top = $(id).offset().top - heightHeader; //Если header fixed
+        // var top = $('#' + id).offset().top;
         //анимируем переход на расстояние - top за 1500 мс
         $('body,html').animate({
             scrollTop: top
