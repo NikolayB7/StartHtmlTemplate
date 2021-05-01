@@ -23,6 +23,22 @@
         }
     }
 }
+@mixin mmin($width, $height: 0) {
+    $w: $width + px;
+    $h: $height + px;
+
+    @if $height==0 {
+        @media all and (min-width: $w) {
+            @content;
+        }
+    }
+
+    @else {
+        @media all and (max-width: $w) and (max-height: $h) {
+            @content;
+        }
+    }
+}
 
 @mixin mmax-h($height) {
     $h: $height + px;
@@ -137,6 +153,25 @@
     background-size: 100% auto;
 }
 
+@function rem($pixels, $root: $fontsize) {
+    @return $pixels / $root + rem;
+}
+
+
+
+@mixin grid-blocks($cols: 1, $m-l-r: 0) {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -$m-l-r;
+    & > * {
+        flex: 0 0 calc(100% / #{$cols});
+        max-width: calc(100% / #{$cols});
+        padding: $m-l-r;
+    }
+}
+
+
+
 @mixin font($fname, $fstyle, $fweight, $furl) {
     @font-face {
         font-family: $fname;
@@ -146,3 +181,5 @@
         src: local($fname), url($furl) format("woff2");
     }
 }
+
+
