@@ -198,13 +198,13 @@
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: $green;
+    background: #000000;
     border-radius: 10px;
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: $green;
+    background: #000000;
   }
 }
 
